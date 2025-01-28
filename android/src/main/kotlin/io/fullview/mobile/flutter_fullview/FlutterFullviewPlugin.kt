@@ -84,6 +84,7 @@ class FlutterFullviewPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     private fun register(call: MethodCall, result: Result) {
+      val region = call.argument<String>("region")!!
       val organisationId = call.argument<String>("organisationId")!!
       val userId = call.argument<String>("userId")!!
       val deviceId = call.argument<String>("deviceId")!!
@@ -91,7 +92,7 @@ class FlutterFullviewPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
       val email = call.argument<String>("email")!!
 
 
-      fullview.register(organisationId, userId, deviceId, name, email)
+      fullview.register(region, organisationId, userId, deviceId, name, email)
       result.success(null)
     }
 
