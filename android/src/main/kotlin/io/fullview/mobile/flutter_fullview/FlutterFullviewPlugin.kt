@@ -10,6 +10,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.fullview.fullview_sdk.Fullview
 import io.fullview.fullview_sdk.HostType
+import io.fullview.fullview_sdk.Region
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
@@ -84,15 +85,19 @@ class FlutterFullviewPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     private fun register(call: MethodCall, result: Result) {
-      val region = call.argument<String>("region")!!
       val organisationId = call.argument<String>("organisationId")!!
       val userId = call.argument<String>("userId")!!
       val deviceId = call.argument<String>("deviceId")!!
       val name = call.argument<String>("name")!!
       val email = call.argument<String>("email")!!
+      val region = when (call.argument<String>("region")!!) {
+          "EU1" -> Region.EU1
+          "EU2" -> Region.EU2
+          "US1" -> Region.US1
+          else -> throw IllegalArgumentException("Invalid region value: $region")
+      }
 
-
-      fullview.register(region, organisationId, userId, deviceId, name, email)
+      fullview.register(organisationId, userId, deviceId, name, email, region)
       result.success(null)
     }
 
